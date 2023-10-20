@@ -15,15 +15,16 @@ num_frames = 100
 x = np.random.rand(num_points)
 y = np.random.rand(num_points)
 z = np.random.rand(num_points)
-colors = np.random.rand(num_points)
+colors = np.random.rand(num_points, 3)
 
 # Initialize the scatter plot with colors
-scatter = ax.scatter(x, y, z, c=colors, cmap='viridis')
+scatter = ax.scatter(x, y, z, c=colors)
 
 # Define an update function for the animation to change colors
 def update(frame):
-  colors = np.random.rand(num_points)  # Generate new random colors
-  scatter.set_array(colors)  # Update the colors of the scatter plot
+  colors = np.random.rand(num_points, 3)  # Generate new random colors
+  # scatter.set_array(colors)  # Update the colors of the scatter plot
+  scatter.set_color(colors)
 
 # Create the animation
 ani = FuncAnimation(fig, update, frames=num_frames, repeat=False)
@@ -34,5 +35,4 @@ ani = FuncAnimation(fig, update, frames=num_frames, repeat=False)
 # Show the animation
 plt.grid(False)
 plt.axis('off')
-# plt.rcParams['figure.figsize'] = [4, 4]
 plt.show()
