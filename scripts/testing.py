@@ -1,7 +1,7 @@
 import cv2 as cv
 import numpy as np
 
-cap = cv.VideoCapture(0, cv.CAP_DSHOW)
+cap = cv.VideoCapture(0)
 
 # Check if the webcam is opened correctly
 if not cap.isOpened():
@@ -15,13 +15,14 @@ while True:
   hsv = cv.cvtColor(frame, cv.COLOR_BGR2HSV)
 
   # lowerRed = np.array([150,150,100])
-  # upperRed = np.array([255,255,255])
+  lowerRed = np.array([150,100,0])
+  upperRed = np.array([180,255,255])
 
-  # mask = cv.inRange(hsv, lowerRed, upperRed)
+  mask = cv.inRange(hsv, lowerRed, upperRed)
 
-  # res = cv.bitwise_and(frame, frame, mask=mask)
-
-  cv.imshow('Input', frame)
+  res = cv.bitwise_and(frame, frame, mask=mask)
+  resized = cv.resize(res, (1920, 1080))
+  cv.imshow('yooooo', resized)
 
   c = cv.waitKey(1)
   if c == 27:
