@@ -1,7 +1,8 @@
 import cv2 as cv
 import numpy as np
 
-cap = cv.VideoCapture(0, cv.CAP_DSHOW)
+# cap = cv.VideoCapture(0, cv.CAP_DSHOW)
+cap = cv.VideoCapture(-1)
 
 # Check if the webcam is opened correctly
 if not cap.isOpened():
@@ -10,6 +11,7 @@ if not cap.isOpened():
 while True:
   ret, frame = cap.read()
   frame = cv.flip(frame, 1)
+  frame = cv.cvtColor(frame,cv.COLOR_BGR2GRAY)
 
   ret, corners = cv.findChessboardCorners(frame, (6,6), None)
   
