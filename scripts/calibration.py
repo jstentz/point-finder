@@ -20,7 +20,7 @@ criteria = (cv.TERM_CRITERIA_EPS + cv.TERM_CRITERIA_MAX_ITER, 30, 0.001)
 objp = np.zeros((chessboardSize[0] * chessboardSize[1], 3), np.float32)
 objp[:,:2] = np.mgrid[0:chessboardSize[0],0:chessboardSize[1]].T.reshape(-1,2)
 
-size_of_chessboard_squares_mm = 20
+size_of_chessboard_squares_mm = 18
 objp = objp * size_of_chessboard_squares_mm
 
 
@@ -29,7 +29,7 @@ objpoints = [] # 3d point in real world space
 imgpoints = [] # 2d points in image plane.
 
 
-images = glob.glob('../calibration-images/*.png')
+images = glob.glob('../calibration-images2/*.png')
 
 for image in images:
 
@@ -60,9 +60,9 @@ cv.destroyAllWindows()
 ret, cameraMatrix, dist, rvecs, tvecs = cv.calibrateCamera(objpoints, imgpoints, frameSize, None, None)
 
 # Save the camera calibration result for later use (we won't worry about rvecs / tvecs)
-pickle.dump((cameraMatrix, dist), open( "../camera/calibration.pkl", "wb" ))
-pickle.dump(cameraMatrix, open( "../camera/cameraMatrix.pkl", "wb" ))
-pickle.dump(dist, open( "../camera/dist.pkl", "wb" ))
+pickle.dump((cameraMatrix, dist), open( "../camera2/calibration.pkl", "wb" ))
+pickle.dump(cameraMatrix, open( "../camera2/cameraMatrix.pkl", "wb" ))
+pickle.dump(dist, open( "../camera2/dist.pkl", "wb" ))
 
 
 ############## UNDISTORTION #####################################################

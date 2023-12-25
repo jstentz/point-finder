@@ -28,9 +28,7 @@ pts2 = pts2.astype(np.float64)
 F, mask = cv.findFundamentalMat(pts1, pts2, cv.FM_LMEDS)
 
 # load in the camera intrinsics
-K = pickle.load(open('../camera/cameraMatrix.pkl', 'rb'))
-
-print(K)
+K = pickle.load(open('../camera2/cameraMatrix.pkl', 'rb'))
 
 # compute the essential matrix
 E = K.T @ F @ K # TODO: should I normalize this by E[-1, -1]?
@@ -56,7 +54,7 @@ def camera2(E):
   W = np.array([[0,-1,0], [1,0,0], [0,0,1]])
 
   if np.linalg.det(U.dot(W).dot(V))<0:
-      W = -W
+    W = -W
 
   M2s = np.zeros([3,4,4])
   M2s[:,:,0] = np.concatenate([U.dot(W).dot(V), U[:,2].reshape([-1, 1])/abs(U[:,2]).max()], axis=1)
@@ -83,6 +81,14 @@ positive_z_sums = np.sum(onlyz >= 0, axis=1)
 best_idx = np.argmax(positive_z_sums)
 final_pts = pts3[best_idx]
 
+# find the reprojection error (for testing purposes)
+pts3_homo = np.append(final_pts, np.ones((final_pts.shape[0], 1)), axis=1)
+reproj_pts1 = np.squeeze(P1 @ np.expand_dims(pts3_homo, -1))
+reproj_pts1 = (reproj_pts1 / reproj_pts1[:, 2, np.newaxis])[:, :-1]
+
+reproj_error = np.mean(np.linalg.norm(pts1 - reproj_pts1, axis=1))
+print(reproj_error) # 11.52, for 300 points, that doesn't seem bad
+
 # swap them so z is the last column
 final_pts[:, [2, 1]] = final_pts[:, [1, 2]]
 
@@ -95,10 +101,12 @@ final_pts -= mean_pt # center around the mean
 max_dist = np.max(np.linalg.norm(final_pts, axis=1))
 final_pts = (final_pts / max_dist) * np.sqrt(2)
 
+# save the final points
+np.save('../points/3dpoints_1.npy', final_pts)
+
 
 # display the points
-
-fig = plt.figure()
+fig = plt.figure(figsize=(10,10))
 ax = fig.add_subplot(projection='3d')
 
 ax.set_xlabel('X')
@@ -126,5 +134,10 @@ be even more error created by that
 
 in the parameters, there is also "size of chessboard in mm", which I didn't take the time to measure
 out when I put it on the screen... maybe try changing that?
+
+I can try messing around with the reprojection error which I computed for my CV assignment and see
+where that gets me
+
+Can possibly try computing the essential matrix directly from the correspondences
 
 '''

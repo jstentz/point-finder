@@ -1,6 +1,7 @@
 import cv2
 
-url = "http://172.16.0.7:4747/video"
+# url = "http://172.16.0.7:4747/video"
+url = "http://192.168.1.148:4747/video"
 cap = cv2.VideoCapture(url)
 
 num = 0
@@ -14,7 +15,7 @@ while cap.isOpened():
     if k == 27:
         break
     elif k == ord('s'): # wait for 's' key to save and exit
-        cv2.imwrite('../calibration-images/img' + str(num) + '.png', img)
+        cv2.imwrite('../calibration-images2/img' + str(num) + '.png', img)
         print(f"image {num} saved!")
         num += 1
 
