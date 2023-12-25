@@ -8,8 +8,8 @@ import matplotlib.pyplot as plt
 import pickle
 
 # read in the points
-pts1 = np.load('../images/frontleft_undist/locations.npy')
-pts2 = np.load('../images/frontright_undist/locations.npy')
+pts1 = np.load('../images/frontleft_undist2/locations.npy')
+pts2 = np.load('../images/frontright_undist2/locations.npy')
 
 # filter out the points that are not visible from both angles
 filled1 = np.any(pts1 != np.array([-1, -1]), axis=1)
@@ -117,27 +117,10 @@ plt.show()
 
 
 '''
-Possible sources of scaling error:
-1. Not good enough of a camera matrix, might need to make sure the calibration was done correctly...
-This would suck if I had to undistort the images again and reclick on the things
+Next steps:
 
-2. something wrong with my math (unlikely cuz I did it)
-
-3. not resolute enough (I don't think this is the problem)
-
-4. I am not passing a wide enough range of points into findFundamentalMatrix. I could consider
-clicking on other parts of the scene that correspond and see if that helps. Lowering the number of points
-passed into that function seems to only worsen things in terms of scaling.
-
-If the scaling is off, I'm worried about bringing in data from other places, since there might 
-be even more error created by that
-
-in the parameters, there is also "size of chessboard in mm", which I didn't take the time to measure
-out when I put it on the screen... maybe try changing that?
-
-I can try messing around with the reprojection error which I computed for my CV assignment and see
-where that gets me
-
-Can possibly try computing the essential matrix directly from the correspondences
+0. check if our labeled points are still valid with new undistortion params
+1. label more points... should I use the old undistortion parameters? I guess
+I can for now, but should prob verify that they aren't too different
 
 '''

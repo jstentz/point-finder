@@ -13,7 +13,7 @@ if len(sys.argv) < 2:
   exit(-1)
 
 angle = sys.argv[1]
-imagesdir = f'../images/{angle}_undist'
+imagesdir = f'../images/{angle}_undist2'
 
 NUM_PIXELS = 500
 
@@ -53,16 +53,16 @@ while i < NUM_PIXELS:
       print('Going back!')
       i = max(0, i - 1)
       break
-    elif key == 32: # space (I don't know where it is)
+    elif key == 13: # enter (I don't know where it is)
       print('Recorded light not visible')
       locations[i] = np.array([-1, -1])
       i += 1
       break
-    elif key == 13: # pick where my mouse currently is 
+    elif key == 32: # space (pick where my mouse currently is) 
       print(f'Selecting {mouse_loc}')
       locations[i] = np.array(mouse_loc).astype(np.int64)
       i += 1
       break
 
 # save the array 
-np.save(f'{imagesdir}/locations', locations)
+np.save(f'{imagesdir}/locations.npy', locations)

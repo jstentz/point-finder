@@ -10,7 +10,7 @@ NUM_PIXELS = 500
 
 cameradir, imagesdir = sys.argv[1], sys.argv[2]
 
-outdir = f'{imagesdir}_undist'
+outdir = f'{imagesdir}_undist2'
 
 # create the undistorted directory if it does not exist 
 if not os.path.exists(outdir):
