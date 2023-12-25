@@ -59,8 +59,8 @@ img = cv.imread('../images/backleft/img_6.jpg')
 imgray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
 ret, thresh = cv.threshold(imgray, 200, 255, 0)
 contours, hierarchy = cv.findContours(thresh, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
-center, radius = cv.minEnclosingCircle(contours)
-imgray = cv.circle(imgray,center,radius,(0,255,0),2)
+# center, radius = cv.minEnclosingCircle(contours)
+# imgray = cv.circle(imgray,center,radius,(0,255,0),2)
 imgray = cv.drawContours(imgray, contours, -1, (0,255,0), 3)
 
 
