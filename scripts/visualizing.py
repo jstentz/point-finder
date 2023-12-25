@@ -29,37 +29,37 @@ sizes = 100 * np.ones(num_points)
 scatter = ax.scatter(points[:, 0], points[:, 1], points[:, 2], c=colors, s=sizes, marker='o', edgecolors=None, alpha=0.4)
 
 
-# # Define an update function for the animation to change colors
-# def update(frame):
-#   global colors
-#   step = np.pi / 200
-#   t = step * frame
-
-#   colorin = (np.sin(3 * (points[:, 0] + t)) / 1.3) < points[:, 2]
-
-#   colors[colorin] = np.array([0, 0, 0])
-#   colors[np.logical_not(colorin)] = np.array([1, 1, 1])
-
-#   blanks = np.logical_not(colors == np.array([0, 0, 0]))
-#   scatter.set_color(colors)
-#   # scatter.set_offsets(points * blanks)
-#   scatter.set_offsets(np.zeros((num_points, 3)))
-#   return scatter
-
-
-t = 0
-step = np.pi / 200
-epsilon = 0.1
-
 # Define an update function for the animation to change colors
 def update(frame):
-  global t, colors
-  t += step
+  global colors
+  step = np.pi / 200
+  t = step * frame
 
-  colors[:, 0] = (np.sin(points[:, 0] + t) / 2) + 0.5
-  colors[:, 1] = (np.sin(points[:, 1] + t + np.pi) / 2) + 0.5
-  colors[:, 2] = (np.sin(points[:, 2] + t) / 2) + 0.5
+  colorin = (np.sin(3 * (points[:, 0] + t)) / 1.3) < points[:, 2]
+
+  colors[colorin] = np.array([0, 0, 0])
+  colors[np.logical_not(colorin)] = np.array([1, 1, 1])
+
+  blanks = np.logical_not(colors == np.array([0, 0, 0]))
   scatter.set_color(colors)
+  # scatter.set_offsets(points * blanks)
+  scatter.set_offsets(np.zeros((num_points, 3)))
+  return scatter
+
+
+# t = 0
+# step = np.pi / 200
+# epsilon = 0.1
+
+# # Define an update function for the animation to change colors
+# def update(frame):
+#   global t, colors
+#   t += step
+
+#   colors[:, 0] = (np.sin(points[:, 0] + t) / 2) + 0.5
+#   colors[:, 1] = (np.sin(points[:, 1] + t + np.pi) / 2) + 0.5
+#   colors[:, 2] = (np.sin(points[:, 2] + t) / 2) + 0.5
+#   scatter.set_color(colors)
 
 
 # angle = 0
