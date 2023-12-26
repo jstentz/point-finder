@@ -54,13 +54,30 @@ def displayEpipolarF(I1, I2, F):
     ax2.plot([xs, xe], [ys, ye], linewidth=2)
     plt.draw()
 
-frontleft_points = np.load('corresp_frontleft.npy')
-frontright_points = np.load('corresp_frontright.npy')
+# read in the points
+pts1 = np.load('../images/frontleft_undist2/locations.npy').astype(np.float64)
+pts2 = np.load('../images/frontright_undist2/locations.npy').astype(np.float64)
+pts3 = np.load('../images/backleft_undist2/locations.npy').astype(np.float64)
 
-F, mask = cv.findFundamentalMat(frontleft_points, frontright_points, cv.FM_LMEDS)
+# filter out the points that are not visible from both angles
+filled1 = np.any(pts1 != np.array([-1, -1]), axis=1)
+filled2 = np.any(pts2 != np.array([-1, -1]), axis=1)
+filled3 = np.any(pts3 != np.array([-1, -1]), axis=1)
+
+FL_FR_shared = filled1 & filled2
+FL_BR_shared = filled1 & filled3
+
+# extract the relevant points shared between angles
+shared_pts1 = pts1[FL_FR_shared]
+shared_pts2 = pts2[FL_FR_shared]
+
+shared_pts3 = pts1[FL_BR_shared]
+shared_pts4 = pts3[FL_BR_shared]
+
+F, mask = cv.findFundamentalMat(shared_pts3, shared_pts4, cv.FM_8POINT)
 
 # load in a random image
-I1 = cv.cvtColor(cv.imread('../images/frontleft_undist/img_0.jpg'), cv.COLOR_BGR2RGB)
-I2 = cv.cvtColor(cv.imread('../images/frontright_undist/img_0.jpg'), cv.COLOR_BGR2RGB)
+I1 = cv.cvtColor(cv.imread('../images/frontleft_undist2/img_0.jpg'), cv.COLOR_BGR2RGB)
+I2 = cv.cvtColor(cv.imread('../images/backleft_undist2/img_0.jpg'), cv.COLOR_BGR2RGB)
 
 displayEpipolarF(I1, I2, F)

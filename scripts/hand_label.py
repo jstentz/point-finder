@@ -18,7 +18,8 @@ imagesdir = f'../images/{angle}_undist2'
 NUM_PIXELS = 500
 
 # start with all -1 for now (which means we don't know any locations)
-locations = (np.ones((NUM_PIXELS, 2)) * -1).astype(np.int64)
+# locations = (np.ones((NUM_PIXELS, 2)) * -1).astype(np.int64)
+locations = np.load(f'../images/{angle}_undist2/guess_locations.npy').astype(np.int64)
 mouse_loc = None
 
 def on_mouse_click(event, x, y, flags, param):
@@ -49,9 +50,13 @@ while i < NUM_PIXELS:
     # 13 is enter (select where my mouse is)
     # Check for the 'Esc' key to exit
     key = cv.waitKey(1)
-    if key == 8: # backspace (go back)
+    if key == 115: # s
       print('Going back!')
       i = max(0, i - 1)
+      break
+    elif key == 119: # w
+      print('Going forward!')
+      i = i + 1
       break
     elif key == 13: # enter (I don't know where it is)
       print('Recorded light not visible')
@@ -65,4 +70,4 @@ while i < NUM_PIXELS:
       break
 
 # save the array 
-np.save(f'{imagesdir}/locations.npy', locations)
+np.save(f'{imagesdir}/guess_locations.npy', locations)
