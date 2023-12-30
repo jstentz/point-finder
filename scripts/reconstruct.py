@@ -135,8 +135,12 @@ final_pts3d[:, 2] *= -1
 # center the points around the mean and make max distance be sqrt 2
 mean_pt = np.mean(final_pts3d, axis=0)
 final_pts3d -= mean_pt # center around the mean
-max_dist = np.max(np.linalg.norm(final_pts3d, axis=1))
-final_pts3d = (final_pts3d / max_dist) * np.sqrt(2)
+# center this stuff along the base of the tree by using the first point
+# final_pts3d[:, 0] -= final_pts3d[0, 0]
+# final_pts3d[:, 0] -= final_pts3d[0, 0]
+max_dist = np.max(np.abs(final_pts3d))
+final_pts3d = final_pts3d / max_dist
+
 
 # save the final points
 np.save('../points/3dpoints_1_guess.npy', final_pts3d)
